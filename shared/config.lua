@@ -94,6 +94,16 @@ Config.Admin = {
 --- Konsolen-Debug (Bridge-Auflösung, Item-Registrierung)
 Config.Debug = false
 
+--- Datenbank: Tabellen beim Start automatisch anlegen (sql/install.sql)
+--- Admin: obdb check | obdb fix
+Config.Database = {
+    autoInstall = true,
+    skipIfInstalled = true,
+    installFile = 'sql/install.sql',
+    checkCommand = 'obdb',
+    checkConsoleOnly = false,
+}
+
 --- Kleidungs-Animationen (Kategorie-Vorschau & Anziehen)
 Config.Animations = {
     Enabled = true,

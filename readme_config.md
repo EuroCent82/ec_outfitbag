@@ -15,5 +15,7 @@ Wichtige Optionen:
 | `Config.Hologram` | Tabelle | 3D-Vorschau neben der Tasche |
 | `Config.Progress` | Tabelle | ox_lib Progress-Bars |
 | `Config.Animations` | Tabelle | Anziehen / Ablegen / Strip |
+| `Config.Database.autoInstall` | bool | Fehlende Tabellen beim Start anlegen |
+| `Config.Database.checkCommand` | string | Admin-Befehl (`obdb check` / `obdb fix`) |
 
 Vollständige Doku: **`README.md`** im Repo.
