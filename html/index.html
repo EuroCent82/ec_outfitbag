@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<!-- ec_outfitbag NUI — Texte werden via app.js aus locales (Lua → SendNUIMessage) gesetzt -->
+
+<html lang="de">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EC Outfit Bag</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <div id="app" class="hidden">
+
+        <div class="scene">
+
+            <aside class="hologram-panel hidden" id="hologramZone" aria-hidden="true">
+                <div class="holo-glow"></div>
+                <div class="holo-beam"></div>
+                <div class="holo-scanline"></div>
+                <div class="holo-figure">
+                    <svg viewBox="0 0 120 280" fill="none" aria-hidden="true">
+                        <ellipse cx="60" cy="28" rx="22" ry="26" stroke="currentColor" stroke-width="1.2" opacity="0.55"/>
+                        <path d="M30 58 Q60 48 90 58 L95 130 Q60 125 25 130 Z" stroke="currentColor" stroke-width="1.2" opacity="0.45"/>
+                        <path d="M35 130 L30 210 Q60 215 90 210 L85 130" stroke="currentColor" stroke-width="1.2" opacity="0.4"/>
+                        <line x1="32" y1="210" x2="28" y2="270" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
+                        <line x1="88" y1="210" x2="92" y2="270" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
+                    </svg>
+                </div>
+                <div class="holo-ring"></div>
+                <div class="holo-readout">
+                    <p class="readout-label" id="holoLabel"></p>
+                    <p class="readout-name" id="holoName">—</p>
+                    <p class="readout-meta" id="holoMeta"></p>
+                </div>
+            </aside>
+
+            <div class="bag-stage">
+
+                <img
+
+                    src="img/outfitbag.png"
+
+                    alt=""
+
+                    class="bag-render"
+
+                    width="1024"
+
+                    height="1536"
+
+                    draggable="false"
+
+                >
+
+
+
+                <div class="cavity-ui">
+
+                    <div class="bag-panel">
+
+
+
+                        <header class="panel-top">
+
+                            <span class="slot-count" id="slotCounter">0/5</span>
+
+                            <div class="panel-actions">
+
+                                <button class="act-btn holo-toggle is-on" id="btnHoloToggle" type="button" data-tip="" aria-pressed="true">
+
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c-4 0-7 2.5-7 6.5S8 18 12 21s7-5.5 7-11.5S16 3 12 3z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+
+                                </button>
+
+                                <button class="act-btn" id="btnClose" data-tip="">
+
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+
+                            </button>
+
+                            </div>
+
+                        </header>
+
+
+
+                        <div class="outfit-list" id="outfitList"></div>
+
+
+
+                        <div class="action-row">
+
+                            <div class="tip-target" data-tip="">
+
+                                <button class="action-btn" id="btnApply" disabled>
+
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/></svg>
+
+                                </button>
+
+                            </div>
+
+                            <div class="tip-target" data-tip="">
+
+                                <button class="action-btn" id="btnEdit" disabled>
+
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+
+                                </button>
+
+                            </div>
+
+                            <div class="tip-target" data-tip="">
+
+                                <button class="action-btn action-btn--del" id="btnDelete" disabled>
+
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <nav class="cat-row">
+
+                            <button class="cat-btn active" data-category="head" data-tip="">
+
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+
+                            </button>
+
+                            <button class="cat-btn" data-category="body" data-tip="">
+
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/></svg>
+
+                            </button>
+
+                            <button class="cat-btn" data-category="legs" data-tip="">
+
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="5" r="2"/><path d="M10 22V12l-2-4h8l-2 4v10"/></svg>
+
+                            </button>
+
+                            <button class="cat-btn" data-category="feet" data-tip="">
+
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 16c0-2 2-4 5-4s5 2 5 4"/><ellipse cx="6.5" cy="18" rx="2.5" ry="1.5"/><ellipse cx="17.5" cy="18" rx="2.5" ry="1.5"/></svg>
+
+                            </button>
+
+                            <button class="cat-btn" data-category="misc" data-tip="">
+
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+
+                            </button>
+
+                        </nav>
+
+
+
+                        <button class="save-btn" id="btnSave" data-tip="">
+
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+
+                            <span></span>
+
+                        </button>
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="uiTooltip" class="ui-tooltip hidden" role="tooltip"></div>
+
+    </div>
+
+
+
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
+
