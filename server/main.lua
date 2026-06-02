@@ -40,9 +40,10 @@ exports('useItem', function(event, item, inventory, slot, data)
     return false
 end)
 
-CreateThread(function()
-    ECOFBBridge.MySQL.WaitReady()
-    if not ECOFBDatabase.EnsureReady() then return end
+local function bootstrapServer()
+    if not ECOFBDatabase.EnsureReady() then
+        return
+    end
 
     ECOFBBags.LoadWorld()
     ECOFBBags.SyncToAll()
@@ -76,6 +77,35 @@ CreateThread(function()
     print('^2[ec_outfitbag]^0 gestartet — Framework: ' .. ECOFBBridge.Framework()
         .. ' | Inventory: ' .. ECOFBBridge.Inventory()
         .. ' | Target: ' .. ECOFBBridge.Target())
+end
+
+CreateThread(function()
+    ECOFBBridge.MySQL.WaitReady()
+
+    ECOFBBridgeServerSchema.Install(function(ok, reason)
+        if not ok and reason ~= 'disabled' and reason ~= 'complete' then
+            print('^1[ec_outfitbag]^0 Datenbank-Installation fehlgeschlagen:', reason or 'unknown')
+            print(('^3[ec_outfitbag]^0 Admin: %s check | %s fix'):format(
+                (Config.Database or {}).checkCommand or 'obdb',
+                (Config.Database or {}).checkCommand or 'obdb'
+            ))
+        end
+
+        ECOFBBridgeServerSchema.GetSchemaReport(function(report)
+            if report.ok then
+                print(('^2[ec_outfitbag]^0 Datenbank OK — %d/%d Tabellen'):format(
+                    #report.presentTables,
+                    #report.requiredTables
+                ))
+            elseif #report.missingTables > 0 then
+                print(('^1[ec_outfitbag]^0 Fehlende Tabellen: %s'):format(
+                    table.concat(report.missingTables, ', ')
+                ))
+            end
+
+            bootstrapServer()
+        end)
+    end)
 end)
 
 AddEventHandler('onResourceStart', function(resource)

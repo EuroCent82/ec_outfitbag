@@ -30,7 +30,7 @@ Taktische **Outfit-Tasche** für FiveM — speichert Outfits pro Charakter, kann
 ## Installation
 
 1. Resource in `[scripts]` legen
-2. SQL: `sql/install.sql` importieren (oder `sql/import_all.bat`)
+2. SQL: optional manuell `sql/install.sql` — Tabellen werden beim Start automatisch angelegt (`Config.Database.autoInstall = true`)
 3. `ensure ec_outfitbag` in `server.cfg`
 4. Item registrieren (`data/ox_inventory_item.lua` — **`consume = 0`** in ox_inventory!)
 5. `shared/config.lua` anpassen

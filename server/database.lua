@@ -2,20 +2,15 @@
 
 ECOFBDatabase = ECOFBDatabase or {}
 
-local REQUIRED_TABLES = {
-    'ec_outfitbag_profiles',
-    'ec_outfitbag_outfits',
-    'ec_outfitbag_world',
-}
-
 function ECOFBDatabase.IsReady()
-    for i = 1, #REQUIRED_TABLES do
+    local tables = ECOFBBridgeServerSchema.RequiredTables()
+    for i = 1, #tables do
         local row = ECOFBBridge.MySQL.SingleSync(
             'SELECT 1 AS ok FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = ? LIMIT 1',
-            { REQUIRED_TABLES[i] }
+            { tables[i] }
         )
         if not row then
-            return false, REQUIRED_TABLES[i]
+            return false, tables[i]
         end
     end
     return true
@@ -25,6 +20,10 @@ function ECOFBDatabase.EnsureReady()
     local ok, missing = ECOFBDatabase.IsReady()
     if not ok then
         print(('^1[ec_outfitbag]^0 %s'):format(_L('notify.db_missing', missing)))
+        print(('^3[ec_outfitbag]^0 Admin: %s check | %s fix'):format(
+            (Config.Database or {}).checkCommand or 'obdb',
+            (Config.Database or {}).checkCommand or 'obdb'
+        ))
         return false
     end
     return true
